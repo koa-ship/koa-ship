@@ -1,0 +1,28 @@
+{
+  "name": "koa-ship",
+  "version": "0.0.1",
+  "description": "Web framework made by koa.",
+  "main": "lib/index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seandou/koa-ship.git"
+  },
+  "keywords": [
+    "framework",
+    "koa"
+  ],
+  "dependencies": {
+    "debug": "*"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">= 4"
+  },
+  "author": "Sean Dou",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seandou/koa-ship/issues"
+  },
+  "homepage": "https://github.com/seandou/koa-ship#readme"
+}
