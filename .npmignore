@@ -10,6 +10,6 @@ lib-cov
 *.out
 *.pid
 
-pids
-logs
 src
+test
+example

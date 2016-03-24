@@ -5,6 +5,7 @@ import debug from 'debug';
 
 import Koa from 'koa';
 
+import loadConfigs from './loadConfigs';
 import loadMiddlewares from './loadMiddlewares';
 
 export default class Application {
@@ -16,6 +17,7 @@ export default class Application {
     this.debug = debug('koa-ship');
 
     this.globals = {};
+    this.configs = {};
     this.middlewares = [];
   }
 
@@ -42,6 +44,7 @@ export default class Application {
     this.debug('app boot');
 
     exposeGlobals(this);
+    this.configs = loadConfigs(this);
     this.middlewares = loadMiddlewares(this);
     cb();
   }
