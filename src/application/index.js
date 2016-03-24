@@ -40,6 +40,8 @@ export default class Application {
 
   boot(cb) {
     this.debug('app boot');
+
+    exposeGlobals(this);
     this.middlewares = loadMiddlewares(this);
     cb();
   }
