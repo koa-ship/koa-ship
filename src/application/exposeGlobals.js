@@ -1,6 +1,6 @@
 'use strict';
 
-import util from './../util';
+import util from './../utils';
 
 export default function exposeGlobals(app) {
   global['_'] = util;

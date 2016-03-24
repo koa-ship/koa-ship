@@ -1,21 +1,29 @@
 'use strict';
 
 import path from 'path';
+import fs from 'fs-extra';
 import debug from 'debug';
 
 import Koa from 'koa';
+import Router from './core/router';
 
+import exposeGlobals from './exposeGlobals';
+import formatEnv from './formatEnv';
 import loadConfigs from './loadConfigs';
 import loadMiddlewares from './loadMiddlewares';
+import loadAppClasses from './loadAppClasses';
 
 export default class Application {
 
   constructor(rootPath, frameworkPath = null) {
+    this.debug = debug('koa-ship');
+
     this.setDirs(rootPath, frameworkPath);
 
     this.server = new Koa();
-    this.debug = debug('koa-ship');
+    this.router = new Router(this);
 
+    this.env = this.loadEnv();
     this.globals = {};
     this.configs = {};
     this.middlewares = [];
@@ -32,6 +40,23 @@ export default class Application {
     this.npmBinPath = path.join(this.rootPath, 'node_modules', '.bin');
   }
 
+  loadEnv() {
+    let env = 'production';
+
+    // read env from env.js file
+    const envfile = path.join(this.rootPath, 'env.js');
+    if (!fs.existsSync(envfile)) {
+      return env;
+    }
+
+    env = require(envfile);
+
+    // NODE_ENV will overwrite env
+    env = process.env.NODE_ENV || env;
+
+    return formatEnv(env);
+  }
+
   set(name, object) {
     this.globals[name] = object;
   }
@@ -40,25 +65,40 @@ export default class Application {
     return this.globals[name];
   }
 
-  boot(cb) {
-    this.debug('app boot');
-
+  prepare() {
+    require('./extendNodeFeatures');
     exposeGlobals(this);
-    this.configs = loadConfigs(this);
+
+    this.configs = loadConfigs(this.rootPath, this.env);
+
+    this.configs.app = this.configs.app || { port: 3000 };
+    this.server.name = this.configs.app.name || 'app';
+    this.server.env = this.env;
+
+    if (this.configs.app.keys) {
+      this.server.keys = this.configs.app.keys;
+    }
+  }
+
+  boot() {
+    this.debug('app boot');
+    this.prepare();
     this.middlewares = loadMiddlewares(this);
-    cb();
+    loadAppClasses(this);
   }
 
   start() {
     this.debug('app start');
+    this.router.loadRules();
+    this.server.listen(this.configs.app.port);
   }
 
   run(cb) {
-    const self = this;
+    this.boot();
+    this.start();
 
-    self.boot(function(err) {
-      self.start();
-      if (typeof cb == 'function') cb(err);
-    });    
+    if (typeof cb == 'function') {
+      cb();
+    }
   }
 }

@@ -1,5 +1,6 @@
 module.exports = {
   name: 'example',
 
-  domain: env.domain
+  domain: env.domain,
+  port: 3000
 };
