@@ -1,0 +1,5 @@
+--require mocha-clean
+--reporter dot
+--ui bdd
+--recursive
+--timeout 5000

@@ -3,15 +3,20 @@
 import path from 'path';
 import debug from 'debug';
 
+import Koa from 'koa';
+
+import loadMiddlewares from './loadMiddlewares';
+
 export default class Application {
 
   constructor(rootPath, frameworkPath = null) {
     this.setDirs(rootPath, frameworkPath);
 
+    this.server = new Koa();
+    this.debug = debug('koa-ship');
+
     this.globals = {};
     this.middlewares = [];
-
-    this.debug = debug('koa-ship');
   }
 
   setDirs(rootPath, frameworkPath) {
@@ -33,10 +38,22 @@ export default class Application {
     return this.globals[name];
   }
 
+  boot(cb) {
+    this.debug('app boot');
+    this.middlewares = loadMiddlewares(this);
+    cb();
+  }
+
+  start() {
+    this.debug('app start');
+  }
+
   run(cb) {
-    this.debug('app run');
-    if (typeof cb == 'function') {
-      cb();
-    }
+    const self = this;
+
+    self.boot(function(err) {
+      self.start();
+      if (typeof cb == 'function') cb(err);
+    });    
   }
 }
