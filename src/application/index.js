@@ -1,8 +1,7 @@
 'use strict';
 
 import path from 'path';
-
-// import debug from 'debug';
+import debug from 'debug';
 
 export default class Application {
 
@@ -11,6 +10,8 @@ export default class Application {
 
     this.globals = {};
     this.middlewares = [];
+
+    this.debug = debug('koa-ship');
   }
 
   setDirs(rootPath, frameworkPath) {
@@ -33,7 +34,8 @@ export default class Application {
   }
 
   run(cb) {
-    if (cb) {
+    this.debug('app run');
+    if (typeof cb == 'function') {
       cb();
     }
   }
