@@ -1,3 +1,4 @@
 module.exports = {
-  'domain': 'example.com'
+  'domain': 'example.com',
+  log: { level: 'debug' },  
 };
