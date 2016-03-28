@@ -2,6 +2,10 @@
 
 import KoaRouter from 'koa-66';
 
+/**
+ * HTTP methods
+ * @type {Array}
+ */
 const METHODS = [
   'options',
   'head',
@@ -14,6 +18,10 @@ const METHODS = [
 
 export default class Router {
 
+  /**
+   * constructor
+   * @param  {Object} app Application instance reference
+   */
   constructor(app) {
     this.app = app;
     this.debug = app.debug;
@@ -30,7 +38,9 @@ export default class Router {
       return false;
     }
 
-    _.forEach(this.configs.routes, (ca, rule) => {
+    let routes = this.formatRoutes(this.configs.routes);
+
+    _.forEach(routes, (ca, rule) => {
       const ret = self.parseRule(rule);
       const parts = ca.split('#');
       let controller = self.parseController(parts[0]);
@@ -55,6 +65,43 @@ export default class Router {
     self.server.use(self.engine.routes());
   }
 
+  /**
+   * Change routes with namespaces to plain rules
+   * @param  {Object} routes Raw routes
+   * @return {Object} Formated routes
+   */
+  formatRoutes(routes) {
+    const self = this;
+
+    let namespaces = routes['namespaces'];
+
+    if (!namespaces) {
+      return routes;
+    }
+
+    delete routes['namespaces'];
+    let nsRoutes = {};
+
+    _.forEach(namespaces, (prefix, basePath) => {
+      let subRoutes = routes[basePath];
+      if (subRoutes) {
+        delete routes[basePath];
+        _.forEach(subRoutes, (ca, rule) => {
+          rule = self.parseRule(rule);
+          rule = `${rule['methods'].join('|')} ${basePath}${rule['path']}`;
+          nsRoutes[rule] = `${prefix}.${ca}`;
+        });
+      }
+    });
+
+    return _.merge(routes, nsRoutes);
+  }
+
+  /**
+   * Parse one rule
+   * @param  {Object} rule 
+   * @return {Object} methods + path
+   */
   parseRule(rule) {
     let methods = [];
     let path = '/';
@@ -82,7 +129,7 @@ export default class Router {
   }
 
   parseController(str) {
-    str = this.format(str);
+    str = this.formatController(str);
     const parts = str.split('.');
 
     let value = global;
@@ -103,7 +150,7 @@ export default class Router {
     return value;
   }
 
-  format(str) {
+  formatController(str) {
     return str.replace(/(.*\.)?([^\.]+)$/, function(m, prefix, cname) {
       prefix = prefix || '';
       return `${prefix}${cname.capitalize()}Controller`;

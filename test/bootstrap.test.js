@@ -7,7 +7,9 @@ require('node-next');
 global['assert'] = chai.assert;
 global['expect'] = chai.expect;
 global['should'] = chai.should();
-global['rootPath'] = path.join(path.dirname(__dirname), 'example');
+
+global['frameworkPath'] = path.dirname(__dirname);
+global['rootPath'] = path.join(frameworkPath, 'example');
 
 // hooks
 before((done) => {

@@ -20,13 +20,12 @@ export default class Application {
 
     this.setDirs(rootPath, frameworkPath);
 
-    this.server = new Koa();
-    this.router = new Router(this);
-
     this.env = this.loadEnv();
     this.globals = {};
     this.configs = {};
     this.middlewares = [];
+
+    this.server = new Koa();
   }
 
   setDirs(rootPath, frameworkPath) {
@@ -89,7 +88,10 @@ export default class Application {
 
   start() {
     this.debug('app start');
-    this.router.loadRules();
+
+    let router = new Router(this);
+    router.loadRules();
+
     this.server.listen(this.configs.app.port);
   }
 
@@ -100,5 +102,9 @@ export default class Application {
     if (typeof cb == 'function') {
       cb();
     }
+  }
+
+  abort(msg) {
+    throw new Error(msg);
   }
 }
