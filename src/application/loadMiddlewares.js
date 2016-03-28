@@ -6,7 +6,7 @@ import View from './../middlewares/view';
 
 const DEFAULT_MW_ORDER = {
   logger: Logger,
-  // base: Base,
+  base: Base,
   // view: View,
 };
 

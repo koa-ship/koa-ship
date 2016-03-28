@@ -68,10 +68,7 @@ export default class Application {
     return this.globals[name];
   }
 
-  prepare() {
-    require('./extendNodeFeatures');
-    exposeGlobals(this);
-
+  loadConfigs() {
     this.configs = loadConfigs(this.rootPath, this.env);
 
     this.configs.app = this.configs.app || { port: 3000 };
@@ -83,8 +80,15 @@ export default class Application {
     }
   }
 
+  prepare() {
+    require('./extendNodeFeatures');
+    exposeGlobals(this);
+    this.loadConfigs();
+  }
+
   boot() {
     this.debug('app boot');
+    
     this.prepare();
     this.middlewares = loadMiddlewares(this);
     loadAppClasses(this);
@@ -96,7 +100,9 @@ export default class Application {
     let router = new Router(this);
     router.loadRules();
 
-    this.server.listen(this.configs.app.port);
+    let port = this.configs.app.port;
+    this.debug('listening on port ' + port);
+    this.server.listen(port);
   }
 
   run(cb) {
