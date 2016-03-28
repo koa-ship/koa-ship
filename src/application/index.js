@@ -56,6 +56,10 @@ export default class Application {
     return formatEnv(env);
   }
 
+  setEnv(env) {
+    this.env = formatEnv(env);
+  }
+
   set(name, object) {
     this.globals[name] = object;
   }
