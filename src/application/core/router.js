@@ -1,6 +1,6 @@
 'use strict';
 
-import KoaRouter from 'koa-66';
+import KoaRouter from 'koa-router';
 
 /**
  * HTTP methods
@@ -62,7 +62,9 @@ export default class Router {
       }
     });
 
-    self.server.use(self.engine.routes());
+    self.server
+      .use(self.engine.routes())
+      .use(self.engine.allowedMethods());
   }
 
   /**
