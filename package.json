@@ -1,6 +1,6 @@
 {
   "name": "koa-ship",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Web framework made by koa.",
   "main": "lib/index.js",
   "scripts": {
@@ -22,7 +22,6 @@
     "bunyan": "^1.8.0",
     "koa-etag": "^3.0.0",
     "koa-conditional-get": "^2.0.0",
-
     "fs-extra": "^0.26.7",
     "glob": "7.0.3",
     "lodash": "^4.6.1",
