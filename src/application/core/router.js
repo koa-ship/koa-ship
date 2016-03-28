@@ -128,6 +128,11 @@ export default class Router {
     };
   }
 
+  /**
+   * Get controller instance from global controller pool.
+   * @param  {String} str     controller name
+   * @return {Controller}     controller instance
+   */
   parseController(str) {
     str = this.formatController(str);
     const parts = str.split('.');
@@ -150,6 +155,11 @@ export default class Router {
     return value;
   }
 
+  /**
+   * Get controller class name
+   * @param  {String} str controller name
+   * @return {String}     class name
+   */
   formatController(str) {
     return str.replace(/(.*\.)?([^\.]+)$/, function(m, prefix, cname) {
       prefix = prefix || '';

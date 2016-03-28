@@ -1,3 +1,10 @@
+'use strict';
+
+/**
+ * format env to item in enum(development|test|staging|production)
+ * @param  {String} env Raw env
+ * @return {String}
+ */
 export default function formatEnv(env) {
   switch(env) {
     case 'dev':
