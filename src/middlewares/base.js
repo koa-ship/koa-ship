@@ -31,9 +31,9 @@ export default class Base {
    */
   setResponseTime() {
     this.app.server.use(async function(ctx, next) {
-      var start = Date.now();
+      let start = Date.now();
       await next();
-      var delta = Date.now() - start;
+      let delta = Date.now() - start;
       ctx.set('X-Response-Time', delta);
     });
   }
