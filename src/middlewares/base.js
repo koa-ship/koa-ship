@@ -11,18 +11,23 @@ export default class Base {
    */
   constructor(app) {
     this.app = app;
-    this.server = app.server;
-
-    this.responseTime();
-
-    this.server.use(conditional());
-    this.server.use(etag());
+    this.use();
 
     app.debug('middleware - base loaded');
   }
 
-  responseTime() {
-    this.server.use(async function(ctx, next) {
+  /**
+   * Use middlewares
+   */
+  use() {
+    this.setResponseTime();
+
+    this.app.server.use(conditional());
+    this.app.server.use(etag());    
+  }
+
+  setResponseTime() {
+    this.app.server.use(async function(ctx, next) {
       var start = Date.now();
       await next();
       var delta = Date.now() - start;

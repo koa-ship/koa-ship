@@ -18,19 +18,25 @@ export default class Logger {
    */
   constructor(app) {
     this.app = app;
-    this.config = app.configs.log || DEFAULT_LOGGER_CONFIG;
+    this.config = _.defaults(DEFAULT_LOGGER_CONFIG, app.configs.log);
 
-    if (app.env == 'development') {
-      app.server.use(logger());
-      app.debug('middleware - logger loaded');
+    this.logDir = path.join(app.rootPath, this.config.baseDir);
+    fs.ensureDirSync(this.logDir);    
+
+    this.use();
+
+    app.debug('middleware - logger loaded');
+  }
+
+  /**
+   * Use middlewares
+   */
+  use() {
+    if (this.app.env == 'development') {
+      this.app.server.use(logger());
     }
 
-    // init
-    const logDir = path.join(app.rootPath, this.config.baseDir);
-    fs.ensureDirSync(logDir);
-
-    // create app logger
-    this.createLogger(logDir);
+    this.createLogger(this.logDir);
   }
 
   /**
