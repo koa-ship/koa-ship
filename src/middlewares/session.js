@@ -19,6 +19,10 @@ const DEFAULT_SESSION_CONFIG = {
 
 export default class Session {
 
+  /**
+   * Session middleware
+   * @param  {Object} app
+   */
   constructor(app) {
     this.app = app;
     this.config = app.configs.session || {};

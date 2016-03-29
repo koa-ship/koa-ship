@@ -26,6 +26,9 @@ export default class Base {
     this.app.server.use(etag());    
   }
 
+  /**
+   * X-Response-Time
+   */
   setResponseTime() {
     this.app.server.use(async function(ctx, next) {
       var start = Date.now();
