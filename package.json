@@ -1,6 +1,6 @@
 {
   "name": "koa-ship",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Web framework made by koa.",
   "main": "lib/index.js",
   "scripts": {
@@ -17,7 +17,7 @@
   ],
   "dependencies": {
     "koa": "^2.0.0",
-    "koa-convert": "*",    
+    "koa-convert": "*",
     "koa-router": "^7.0.0",
     "koa-logger": "^2.0.0",
     "bunyan": "^1.8.0",
@@ -25,7 +25,7 @@
     "koa-conditional-get": "^2.0.0",
     "koa-generic-session": "^1.10.2",
     "koa-redis": "^2.0.0",
-    "koa-passport": "^2.1.0",    
+    "koa-passport": "^2.1.0",
     "fs-extra": "^0.26.7",
     "ejs": "^2.4.1",
     "glob": "7.0.3",
