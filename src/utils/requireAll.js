@@ -22,7 +22,7 @@ export default function requireAll(options) {
   const files = fs.readdirSync(dirname);
 
   files.forEach(file => {
-    const filepath = dirname + '/' + file;
+    const filepath = `${dirname}/${file}`;
     if (fs.statSync(filepath).isDirectory()) {
 
       if (excludeDirectory(file)) return;

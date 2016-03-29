@@ -101,7 +101,7 @@ export default class Application {
     router.loadRules();
 
     let port = this.configs.app.port;
-    this.debug('listening on port ' + port);
+    this.debug(`listening on port ${port}`);
     this.server.listen(port);
   }
 
