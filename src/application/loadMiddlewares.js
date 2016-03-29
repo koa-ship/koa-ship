@@ -14,6 +14,11 @@ const DEFAULT_MW_ORDER = {
   passport: Passport,
 };
 
+/**
+ * Load middlewares by order
+ * @param  {Object} app Application handler
+ * @return {Object} Middlewares
+ */
 export default function loadMiddlewares(app) {
   app.debug('load middlewares')
 
