@@ -10,7 +10,7 @@ const DEFAULT_MW_ORDER = {
   logger: Logger,
   base: Base,
   session: Session,  
-  // view: View,
+  view: View,
   passport: Passport,
 };
 
