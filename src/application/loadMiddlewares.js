@@ -3,11 +3,15 @@
 import Logger from './../middlewares/logger';
 import Base from './../middlewares/base';
 import View from './../middlewares/view';
+import Session from './../middlewares/session';
+import Passport from './../middlewares/passport';
 
 const DEFAULT_MW_ORDER = {
   logger: Logger,
   base: Base,
+  session: Session,  
   // view: View,
+  passport: Passport,
 };
 
 export default function loadMiddlewares(app) {
