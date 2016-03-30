@@ -7,6 +7,10 @@ import View from './../middlewares/view';
 import Static from './../middlewares/static';
 import Passport from './../middlewares/passport';
 
+/**
+ * Middleware map
+ * @type {Object}
+ */
 const DEFAULT_MW_ORDER = {
   logger: Logger,
   base: Base,
