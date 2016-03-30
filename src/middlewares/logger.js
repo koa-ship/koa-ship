@@ -18,7 +18,7 @@ export default class Logger {
    */
   constructor(app) {
     this.app = app;
-    this.config = _.defaults(DEFAULT_LOGGER_CONFIG, app.configs.log);
+    this.config = _.merge({}, DEFAULT_LOGGER_CONFIG, app.configs.log);
 
     this.logDir = path.join(app.rootPath, this.config.baseDir);
     fs.ensureDirSync(this.logDir);    

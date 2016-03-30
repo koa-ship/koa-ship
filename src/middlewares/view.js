@@ -26,7 +26,7 @@ export default class View {
   constructor(app) {
     this.app = app;
     this.context = this.app.server.context;
-    this.config = _.defaults({}, DEFAULT_VIEW_CONFIG, app.configs.view);
+    this.config = _.merge({}, DEFAULT_VIEW_CONFIG, app.configs.view);
     this.defaultLayout = this.config.defaultLayout;
 
     this.use();

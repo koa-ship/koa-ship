@@ -26,7 +26,7 @@ export default class Session {
   constructor(app) {
     this.app = app;
     this.config = app.configs.session || {};
-    this.store = redisStore(_.defaults({}, DEFAULT_REDIS_CONFIG, this.config.redis));
+    this.store = redisStore(_.merge({}, DEFAULT_REDIS_CONFIG, this.config.redis));
 
     app.debug('middleware - session loaded');
   }
@@ -35,7 +35,7 @@ export default class Session {
    * Use middlewares
    */
   use() {
-    let sessionOptions = _.defaults({}, DEFAULT_SESSION_CONFIG, this.config);
+    let sessionOptions = _.merge({}, DEFAULT_SESSION_CONFIG, this.config);
     sessionOptions.store = this.store;
     app.server.use(convert(session(sessionOptions)));    
   }
