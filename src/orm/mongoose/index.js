@@ -19,7 +19,7 @@ class Client {
 
   connect() {
     const self = this;
-    const options = {
+    let options = {
       db: {
         native_parser: true
       },
@@ -33,11 +33,17 @@ class Client {
         auto_reconnect: false,      
         // rs_name: 'myReplicaSetName'
       },
-      // user: 'myUserName',
-      // pass: 'myPassword'
     };
 
-    const uri = `mongodb://${this.config.host}:${this.config.port}/${this.config.dbname}`;
+    if (this.config.user) {
+      options.user = this.config.user;
+    }
+
+    if (this.config.password) {
+      options.pass = this.config.password;
+    }
+
+    let uri = `mongodb://${this.config.host}:${this.config.port}/${this.config.dbname}`;
 
     mongoose.connection.on('error', function(err) {
       console.trace(err);
