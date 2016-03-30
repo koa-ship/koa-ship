@@ -7,6 +7,22 @@ import filterRules from './filterRules';
 import timestamp from './timestamp';
 import pagination from './pagination';
 
+const MONGOOSE_CONN_OPTIONS = {
+  db: {
+    native_parser: true
+  },
+  server: {
+    poolSize: 5,
+    socketOptions: { keepAlive: 1 },
+    auto_reconnect: false,     
+  },
+  replset: {
+    socketOptions: { keepAlive: 1 },
+    auto_reconnect: false,      
+    // rs_name: 'myReplicaSetName'
+  }
+};
+
 class Client {
 
   constructor(config) {
@@ -19,21 +35,7 @@ class Client {
 
   connect() {
     const self = this;
-    let options = {
-      db: {
-        native_parser: true
-      },
-      server: {
-        poolSize: 5,
-        socketOptions: { keepAlive: 1 },
-        auto_reconnect: false,     
-      },
-      replset: {
-        socketOptions: { keepAlive: 1 },
-        auto_reconnect: false,      
-        // rs_name: 'myReplicaSetName'
-      },
-    };
+    let options = MONGOOSE_CONN_OPTIONS;
 
     if (this.config.user) {
       options.user = this.config.user;
