@@ -2,8 +2,9 @@
 
 import Logger from './../middlewares/logger';
 import Base from './../middlewares/base';
-import View from './../middlewares/view';
 import Session from './../middlewares/session';
+import View from './../middlewares/view';
+import Static from './../middlewares/static';
 import Passport from './../middlewares/passport';
 
 const DEFAULT_MW_ORDER = {
@@ -11,6 +12,7 @@ const DEFAULT_MW_ORDER = {
   base: Base,
   session: Session,  
   view: View,
+  static: Static,
   passport: Passport,
 };
 
