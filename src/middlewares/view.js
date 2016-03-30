@@ -83,7 +83,7 @@ export default class View {
   json() {
     return function(data) {
       this.type = 'json';
-      this.body = data;
+      this.body = data || {};
     }
   }  
 
