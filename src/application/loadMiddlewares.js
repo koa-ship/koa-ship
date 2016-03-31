@@ -2,10 +2,12 @@
 
 import Logger from './../middlewares/logger';
 import Base from './../middlewares/base';
+import Redis from './../middlewares/redis';
 import Session from './../middlewares/session';
 import Orm from './../middlewares/orm';
 import View from './../middlewares/view';
 import Static from './../middlewares/static';
+import Filter from './../middlewares/filter';
 import Passport from './../middlewares/passport';
 
 /**
@@ -15,10 +17,12 @@ import Passport from './../middlewares/passport';
 const DEFAULT_MW_ORDER = {
   logger: Logger,
   base: Base,
-  session: Session,  
+  redis: Redis,
+  session: Session,
   orm: Orm,  
   view: View,
   static: Static,
+  filter: Filter,
   passport: Passport,
 };
 
