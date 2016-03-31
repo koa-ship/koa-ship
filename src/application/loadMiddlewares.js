@@ -8,6 +8,7 @@ import Orm from './../middlewares/orm';
 import View from './../middlewares/view';
 import Static from './../middlewares/static';
 import Filter from './../middlewares/filter';
+import Csrf from './../middlewares/csrf';
 import Passport from './../middlewares/passport';
 
 /**
@@ -23,6 +24,7 @@ const DEFAULT_MW_ORDER = {
   view: View,
   static: Static,
   filter: Filter,
+  csrf: Csrf,
   passport: Passport,
 };
 

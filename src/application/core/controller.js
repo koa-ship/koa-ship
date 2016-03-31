@@ -17,6 +17,8 @@ export default class Controller {
   }
 
   before() {
+    this.set('_csrf', this.ctx.csrf);
+    this.set('csrf_tag', '<input type="hidden" name="_csrf" value="' + this.ctx.csrf + '">');    
   }
 
   after() {
