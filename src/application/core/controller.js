@@ -23,6 +23,21 @@ export default class Controller {
   }
 
   /**
+   * Pass params to state which can be invoke in view.
+   * @param {String|Object} key   Key or kv map
+   * @param {Object}        value 
+   */
+  set(key, value) {
+    if (typeof key == 'object') {
+      _.forEach(key, (v, k) => {
+        this.ctx.state[k] = v;
+      });
+    } else {
+      this.ctx.state[key] = value;
+    }
+  }  
+
+  /**
    * Render html with view file and data
    * @param  {String} view View file path
    * @param  {Object} data
