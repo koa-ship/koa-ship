@@ -28,6 +28,7 @@ export default class Orm {
     fs.ensureDirSync(this.config.models);
 
     this.client = this.createClient();
+    app.debug('middleware - orm loaded');
   }
 
   /**
