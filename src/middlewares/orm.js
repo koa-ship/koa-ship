@@ -8,10 +8,9 @@ import fs from 'fs-extra';
  * @type {Object}
  */
 const DEFAULT_ORM_CONFIG = {
-  type: 'mongodb',
+  type: 'sqlite',
   host: '127.0.0.1',
-  dbname: 'test',
-  port: 27017
+  dbname: 'test'
 };
 
 export default class Orm {
@@ -39,7 +38,7 @@ export default class Orm {
     let adapter = this.getAdapter(this.config.type);
     let Client = require('./../orm/' + adapter);
 
-    return new Client(this.config);
+    return new Client(this.app, this.config);
   }
 
   /**
