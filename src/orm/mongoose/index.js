@@ -23,10 +23,18 @@ const MONGOOSE_CONN_OPTIONS = {
   }
 };
 
+const DEFAULT_MONGOOSE_CONFIG = {
+  host: '127.0.0.1',
+  port: 27017,
+  dbname: 'test',
+  user: null,
+  password: null
+};
+
 class Client {
 
   constructor(config) {
-    this.config = config;
+    this.config = _.merge({}, DEFAULT_MONGOOSE_CONFIG, config);
     this.reconnect = true;
 
     this.connect();
