@@ -33,7 +33,8 @@ const DEFAULT_MONGOOSE_CONFIG = {
 
 class Client {
 
-  constructor(config) {
+  constructor(app, config) {
+    this.app = app;
     this.config = _.merge({}, DEFAULT_MONGOOSE_CONFIG, config);
     this.reconnect = true;
 
