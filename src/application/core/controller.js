@@ -37,6 +37,14 @@ export default class Controller {
     } else {
       this.ctx.state[key] = value;
     }
+  }
+
+  /**
+   * Set layout
+   * @param  {String} name Layout name
+   */
+  layout(name) {
+    this.ctx.state.layout = name;
   }  
 
   /**
