@@ -1,7 +1,29 @@
 'use strict';
 
+import path from 'path';
+import fs from 'fs-extra';
+import convert from 'koa-convert';
 import conditional from 'koa-conditional-get';
 import etag from 'koa-etag';
+import bodyParser from 'koa-body';
+
+// https://github.com/dlau/koa-body#options
+const DEFAULT_BODY_PARSER_CONFIG = {
+  jsonLimit: '1mb',
+  formLimit: '128kb',
+  textLimit: '128kb',
+  encoding: 'utf-8',
+  multipart: true,
+  strict: true,
+  // https://github.com/dlau/koa-body#some-options-for-formidable
+  formidable: {
+    maxFields: 20,
+    maxFieldsSize: '2mb',
+    keepExtensions: true,
+    hash: 'sha1',
+    multiples: true,
+  }
+};
 
 export default class Base {
 
@@ -23,7 +45,9 @@ export default class Base {
     this.setResponseTime();
 
     this.app.server.use(conditional());
-    this.app.server.use(etag());    
+    this.app.server.use(etag());
+
+    this.useBodyParser();
   }
 
   /**
@@ -38,4 +62,16 @@ export default class Base {
     });
   }
 
+  /**
+   * Use BodyParser
+   */
+  useBodyParser() {
+    let config = this.app.configs.upload || {};
+    let uploadPath = path.join(this.app.rootPath, config.uploadPath || 'data/files');
+    let options = _.merge({}, DEFAULT_BODY_PARSER_CONFIG, config);
+
+    fs.ensureDirSync(uploadPath);
+    this.app.set('uploadPath', uploadPath);
+    this.app.server.use(convert(bodyParser(options)));
+  }
 }
