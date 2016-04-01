@@ -64,11 +64,6 @@ class Client {
     mongoose.connect(uri, options);    
   }
 
-  close() {
-    this.reconnect = false;
-    mongoose.disconnect();
-  }
-
   exposeGlobals() {
     const self = this;
 
@@ -108,6 +103,11 @@ class Client {
     });
 
     return ModelClass;
+  }
+
+  close() {
+    this.reconnect = false;
+    mongoose.disconnect();
   }
 
 }
