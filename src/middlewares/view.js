@@ -98,8 +98,8 @@ export default class View {
     }
 
     const tpl = fs.readFileSync(viewFile, 'utf8');
-
     return ejs.render(tpl, data, {
+      filename: `app/views/${view}`,
       delimiter: '%',
       compileDebug: false
     });
