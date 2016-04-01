@@ -9,6 +9,7 @@ import View from './../middlewares/view';
 import Static from './../middlewares/static';
 import Filter from './../middlewares/filter';
 import Csrf from './../middlewares/csrf';
+import Asset from './../middlewares/asset';
 import Passport from './../middlewares/passport';
 
 /**
@@ -25,6 +26,7 @@ const DEFAULT_MW_ORDER = {
   static: Static,
   filter: Filter,
   csrf: Csrf,
+  asset: Asset,
   passport: Passport,
 };
 
