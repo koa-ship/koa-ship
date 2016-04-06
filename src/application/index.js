@@ -37,6 +37,12 @@ export default class Application {
 
     this.frameworkPath = frameworkPath;
     this.npmBinPath = path.join(this.rootPath, 'node_modules', '.bin');
+
+    this.tmpPath = path.join(this.rootPath, 'tmp');
+    fs.ensureDirSync(this.tmpPath);
+
+    this.dataPath = path.join(this.rootPath, 'data');
+    fs.ensureDirSync(this.dataPath);
   }
 
   loadEnv() {
