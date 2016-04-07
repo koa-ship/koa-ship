@@ -18,7 +18,7 @@ export default class Filter {
         if (Object.keys(errors).length == 0) {
           errors = null;
         }
-        return { raw: raw, params: params, errors: errors };        
+        return { raw: raw, params: params, errors: errors, error: JSON.stringify(errors) };
       }
     });
 
