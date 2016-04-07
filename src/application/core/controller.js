@@ -130,15 +130,18 @@ export default class Controller {
    * @return {Object}          { raw: {}, params: {}, error: '', errors: {}}
    */
   filterWith(...names) {
+    let throwError = false;
+
     if (Array.isArray(names[0])) {
       names = names[0];
+      throwError = (names[1] === true);
     }    
 
     let rawData = this.params(names);    
     let rules = this.rules || {};
     rules = _.pickWithKeys(rules, names, { type: 'string', required: true });
 
-    return this.filter(rawData, rules);
+    return this.filter(rawData, rules, throwError);
   }
 
 }
