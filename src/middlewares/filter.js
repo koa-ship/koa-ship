@@ -130,7 +130,7 @@ export default class Filter {
     rule.escape = (rule.escape === false) ? false : (rule.escape || true);
 
     if (rule.escape) {
-      value = _.validator.escape(value);
+      value = _.escape(value);
     }
 
     if (rule.length) {
@@ -177,11 +177,11 @@ export default class Filter {
   checkInteger(value, rule) {
     const name = rule.name;
 
-    if (!_.validator.isInt(value)) {
+    if (!_.isInt(value)) {
       return [`${name} 不是一个整数`, value];
     }
 
-    value = _.validator.toInt(value);
+    value = _.toInt(value);
     return this.checkRange(value, rule);
   }
 
@@ -192,27 +192,27 @@ export default class Filter {
   checkFloat(value, rule) {
     const name = rule.name;
 
-    if (!_.validator.isFloat(value)) {
+    if (!_.isFloat(value)) {
       return [`${name} 不是一个浮点数`, value];
     }
 
-    value = _.validator.toFloat(value);
+    value = _.toFloat(value);
     return this.checkRange(value, rule);
   }
 
   checkNumber(value, rule) {
     const name = rule.name;
 
-    if (!_.validator.isNumeric(value)) {
+    if (!_.isNumeric(value)) {
       return [`${name} 不是一个数字`, value];
     }
 
-    value = _.validator.toFloat(value);
+    value = _.toFloat(value);
     return this.checkRange(value, rule); 
   }
 
   checkBoolean(value, rule) {
-    value = _.validator.toBoolean(value);
+    value = _.toBoolean(value);
     return [null, value];
   }
 
@@ -251,7 +251,7 @@ export default class Filter {
   checkJson(value, rule) {
     const name = rule.name;
 
-    if (!_.validator.isJSON(value)) {
+    if (!_.isJSON(value)) {
       return [`${name} 不是一个有效json字符串`, value];
     }
 
@@ -275,11 +275,11 @@ export default class Filter {
   checkTimestamp(value, rule) {
     const name = rule.name;
 
-    if (!_.validator.isInt(value)) {
+    if (!_.isInt(value)) {
       return [`${name} 不是一个有效的时间戳`, value];
     }
 
-    value = _.moment(_.validator.toInt(value) * 1000).toDate();
+    value = _.moment(_.toInt(value) * 1000).toDate();
 
     // TODO: range
 
@@ -289,18 +289,18 @@ export default class Filter {
   checkEmail(value, rule) {
     const name = rule.name;
 
-    if (!_.validator.isEmail(value)) {
+    if (!_.isEmail(value)) {
       return [`${name} 不是一个有效的邮件`, value];
     }
 
-    value = _.validator.normalizeEmail(value);
+    value = _.normalizeEmail(value);
     return [null, value];
   }
 
   checkIP(value, rule) {
     const name = rule.name;
 
-    if (!_.validator.isIP(value)) {
+    if (!_.isIP(value)) {
       return [`${name} 不是一个有效的IP地址`, value];
     }
 
@@ -314,7 +314,7 @@ export default class Filter {
   checkMongoid(value, rule) {
     const name = rule.name;
 
-    if (!_.validator.isMongoId(value)) {
+    if (!_.isMongoId(value)) {
       return [`${name} 不是一个有效的MongoID`, value];
     }
 
