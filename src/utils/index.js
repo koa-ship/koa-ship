@@ -7,8 +7,10 @@ import moment from 'moment';
 import common from './common';
 import requireAll from './requireAll';
 
+// custom utils
 lodash.mixin(common);
 
+// third parts utils
 lodash.mixin({
   async: async,
   moment: moment,
