@@ -67,36 +67,45 @@ export default class Asset {
     }
   }
 
+  /**
+   * Use minifed assets
+   */
   useMinifiedAssets() {
     const self = this;
     const options = { root: this.minifiedAssetsPath, index: 'index.html' };
 
     this.app.server.use(async function(ctx, next) {
-      // regenerate assets json file
+      // Regenerate assets hash when any asset changes
       if (self.getAssetsMtime() != self.assetsMtime) {
         self.syncAssetsHash();
         self.assetsMtime = self.getAssetsMtime();
       }
 
+      // Pass assets variable to view
       ctx.state.assets = self.htmlTags(self.baseUrl, self.assets);
       await next();
 
       if (ctx.method != 'HEAD' && ctx.method != 'GET') return;
       if (!ctx.path.match(/.*\.js$/) && !ctx.path.match(/.*\.css$/)) return;
-      // response is already handled
+
+      // Response is already handled
       if (ctx.body != null || ctx.status != 404) return;
 
+      // Render assets when url matches
       const validPath = self.getValidPath(self.baseUrl);
       if (ctx.path.startsWith(validPath)) {
         let file = ctx.path.replace(/.*\/([^\/]+)$/, '$1');
 
-        // pipline assets
+        // Pipline assets
         await self.process(file);
         await send(ctx, '/' + file, options);
       }
     });
   }
 
+  /**
+   * Use raw assets
+   */
   useRawAssets() {
     const self = this;
 
@@ -106,30 +115,38 @@ export default class Asset {
     };
 
     this.app.server.use(async function(ctx, next) {
+      // Pass assets variable to view
       ctx.state.assets = self.htmlTags('/', self.assets);
-
       await next();
 
       if (ctx.method != 'HEAD' && ctx.method != 'GET') return;
-
       if (!ctx.path.match(/.*\.js$/) && !ctx.path.match(/.*\.css$/)) return;
-      // response is already handled
+
+      // Response is already handled
       if (ctx.body != null || ctx.status != 404) return;
 
       await send(ctx, ctx.path, options);
     });
   }
 
+  /**
+   * Save assets hash
+   * @return {[type]} [description]
+   */
   syncAssetsHash() {
     this.assets = this.genAssetsHash();
   }
 
+  /**
+   * Generate assets hash
+   */
   genAssetsHash() {
     let self = this;
     let md5HashPool = { };
     let tasks = [];
     let assets = {js: {}, css: {}};
 
+    // Generate hash by group
     var groupAssetsHash = function(pool, assets) {
       var hash = '';
 
@@ -165,6 +182,12 @@ export default class Asset {
     return assets;
   }
 
+  /**
+   * Html tags
+   * @param  {String} baseUrl Assets prefix path or url
+   * @param  {Array}  assets  Assets hash
+   * @return {Object}         Html tags
+   */
   htmlTags(baseUrl, assets) {
     var htmlTags = { js: {}, css: {} };
 
@@ -197,6 +220,11 @@ export default class Asset {
     return htmlTags;
   }
 
+  /**
+   * Patch base url
+   * @param  {String} baseUrl Raw url
+   * @return {String}         Patched url
+   */
   getValidPath(baseUrl) {
     if (baseUrl.match(/^https?:\/\//)) {
       return baseUrl.replace(/^https?:\/\/[^\/]+(\/.*)$/, '$1');
@@ -205,6 +233,10 @@ export default class Asset {
     }
   }
 
+  /**
+   * Compress raw files to the minifed file
+   * @param  {String} file Dest file
+   */
   process(file) {
     const self = this;
     const assets = this.assets || { js: {}, css: {} };
@@ -215,6 +247,8 @@ export default class Asset {
     }
 
     const group = file.replace(/^(.+)\-[0-9a-z]+\.(css|js)$/, '$1');
+
+    // Compress js files
     if (file.match(/.*\.js$/)) {
       if (assets.js[group] != file) {
         return;
@@ -230,6 +264,7 @@ export default class Asset {
       });      
     }
 
+    // Compress css files
     if (file.match(/.*\.css$/)) {
       if (assets.css[group] != file) {
         return;
