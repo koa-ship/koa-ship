@@ -102,6 +102,27 @@ export default class Controller {
   }
 
   /**
+   * Redirect to url
+   * @param  {String} url    Dest url
+   * @param  {Number} status Http status
+   */
+  redirect(url, status = 302) {
+    this.status = status;
+    this.ctx.redirect(url);
+  }
+
+  /**
+   * Wirte data to flash and redirect to url
+   * @param  {String} url  Dest url
+   * @param  {Object} data Flash data
+   * @param  {Number} status Http status
+   */
+  redirectWithFlash(url, data, status = 302) {
+    this.flash(data);
+    this.redirect(url, status);
+  }
+
+  /**
    * Filter params with names from context
    * @param  {...Array} names Keys
    * @return {Array}          Picked params
