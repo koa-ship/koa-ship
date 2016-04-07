@@ -1,6 +1,7 @@
 'use strict';
 
-import RD from 'redis';
+import RedisClient from 'redis';
+import Async from 'async';
 
 const DEFAULT_REDIS_CONFIG = {
   host: '127.0.0.1',
@@ -23,7 +24,7 @@ export default class Redis {
   }
 
   createClient() {
-    return RD.createClient({
+    return RedisClient.createClient({
       host: this.config.host,
       port: this.config.port,
 
@@ -137,7 +138,7 @@ export default class Redis {
           });        
         }
 
-        _.async.parallel(tasks, function(err) {
+        Async.parallel(tasks, function(err) {
           if (err) throw new Error(err);
           resolve(items);
         });
@@ -199,7 +200,7 @@ export default class Redis {
           });
         }
 
-        _.async.parallel(tasks, function(err) {
+        Async.parallel(tasks, function(err) {
           if (err) throw new Error(err);
           resolve();
         });
