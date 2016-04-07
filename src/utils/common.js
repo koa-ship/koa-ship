@@ -1,14 +1,18 @@
-import utility from 'utility';
-
 export default {
 
-  md5: function(data) {
-    return utility.md5(data);
-  },
+  pickWithKeys: function(params, keys, defaultVal = null) {
+    let picked = {};
 
-  sha1: function(data) {
-    return utility.sha1(data);
-  },  
+    if (Array.isArray(keys[0])) {
+      keys = keys[0];
+    }
+
+    for(let key of keys) {
+      picked[key] = (params[key] === undefined) ? defaultVal : params[key];
+    }
+
+    return picked;
+  },
 
   sleep: function(ms) {
     return new Promise((resolve) => {

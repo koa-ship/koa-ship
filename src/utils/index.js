@@ -1,6 +1,7 @@
 'use strict';
 
 import lodash from 'lodash';
+import utility from 'utility';
 import async from 'async';
 import validator from 'validator';
 import moment from 'moment';
@@ -12,6 +13,7 @@ lodash.mixin(common);
 
 // third parts utils
 lodash.mixin({
+  utility: utility,
   async: async,
   moment: moment,
   validator: validator,
