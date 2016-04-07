@@ -72,4 +72,21 @@ export default class Controller {
     this.ctx.json(data);
   }
 
+  /**
+   * Expose helper functions to context
+   * @param  {...String} names Helper names
+   */
+  helper(...names) {
+    let ctx = this.ctx;
+
+    for(let name of names) {
+      let Helper = global[`${name.capitalize()}Helper`];
+      if (Helper) {
+        for(let fn of Object.keys(Helper)) {
+          ctx.state[fn] = Helper[fn];
+        }
+      }
+    }
+  }
+
 }
