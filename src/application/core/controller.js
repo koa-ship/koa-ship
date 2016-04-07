@@ -100,4 +100,45 @@ export default class Controller {
 
     this.ctx.flash = data;
   }
+
+  /**
+   * Filter params with names from context
+   * @param  {...Array} names Keys
+   * @return {Array}          Picked params
+   */
+  params(...names) {
+    let params = {};
+
+    params = _.merge(params, this.ctx.query);
+    params = _.merge(params, this.ctx.request.body);
+    params = _.merge(params, this.ctx.params);
+
+    if (Array.isArray(names[0])) {
+      names = names[0];
+    }    
+
+    if (names.length == 0) {
+      return params;
+    } else {
+      return _.pickWithKeys(params, names);
+    }
+  }
+
+  /**
+   * Filter params with rules
+   * @param  {...Array} names  Keys
+   * @return {Object}          { raw: {}, params: {}, error: '', errors: {}}
+   */
+  filterWith(...names) {
+    if (Array.isArray(names[0])) {
+      names = names[0];
+    }    
+
+    let rawData = this.params(names);    
+    let rules = this.rules || {};
+    rules = _.pickWithKeys(rules, names, { type: 'string', required: true });
+
+    return this.filter(rawData, rules);
+  }
+
 }
