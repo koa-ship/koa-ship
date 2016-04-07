@@ -68,11 +68,12 @@ export default class Application {
 
   loadConfigs() {
     this.configs = loadConfigs(this.rootPath, this.env);
+    this.name = this.configs.app.name;
 
-    this.configs.app = this.configs.app || { port: 3000 };
-    this.server.name = this.configs.app.name || 'app';
+    this.server.name = this.configs.app.name;
     this.server.env = this.env;
 
+    // TODO: warnning keys should set
     if (this.configs.app.keys) {
       this.server.keys = this.configs.app.keys;
     }

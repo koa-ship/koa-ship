@@ -35,6 +35,9 @@ export default function loadConfigs(rootPath, envString) {
     configs[path.basename(file, '.js')] = require(file);
   }
 
+  // set defaults
+  let defaultAppConfig = { name: 'app', port: 3000 };
+  configs.app = _.merge({}, defaultAppConfig, configs.app || {});
   configs.env = env;
 
   return configs;
