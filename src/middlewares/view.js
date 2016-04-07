@@ -37,10 +37,45 @@ export default class View {
    * Use middlewares
    */
   use() {
+    // Expose render tools to context
     this.context.render = this.render();
     this.context.text = this.text();
     this.context.json = this.json();
+
+    // Enable flash
+    if (this.app.middlewareIsLoad('session')) {
+      this.useFlash();
+    }
   }
+
+  /**
+   * Use flash
+   */
+  useFlash() {
+    let key = this.app.name + '-flash';
+
+    this.app.server.use(async function(ctx, next) {
+      let data = ctx.session[key] || {};
+
+      delete ctx.session[key];
+
+      Object.defineProperty(ctx, 'flash', {
+        enumerable: true,
+        get: function() {
+          return data;
+        },
+        set: function(val) {
+          ctx.session[key] = val;
+        }
+      });
+
+      await next();
+
+      if (ctx.status == 302 && ctx.session && !(ctx.session[key])) {
+        ctx.session[key] = data;
+      }
+    });
+  }  
 
   /**
    * Render html with view file and data

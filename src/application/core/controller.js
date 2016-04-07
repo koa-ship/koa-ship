@@ -89,4 +89,15 @@ export default class Controller {
     }
   }
 
+  /**
+   * Get flash data from previous request or pass it to the next
+   * @param  {Object} data Flash data
+   */
+  flash(data) {
+    if (data == undefined) {
+      return this.ctx.flash;
+    }
+
+    this.ctx.flash = data;
+  }
 }
