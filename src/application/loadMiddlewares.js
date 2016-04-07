@@ -41,14 +41,14 @@ export default function loadMiddlewares(app) {
   let config = app.configs.middlewares || {};
   let order = config.order || Object.keys(DEFAULT_MW_ORDER);
   let custom = config.custom || {};
-  let middlewares = [];
 
   for(let mw of order) {
     let Middleware = custom[mw] || DEFAULT_MW_ORDER[mw];
     if (Middleware && typeof(Middleware) == 'function') {
-      middlewares.push(new Middleware(app));
+      app.middlewares.push({
+        name: mw,
+        handler: new Middleware(app)
+      });
     }
   }
-
-  return middlewares;
 };

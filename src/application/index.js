@@ -66,14 +66,6 @@ export default class Application {
     this.env = formatEnv(env);
   }
 
-  set(name, object) {
-    this.globals[name] = object;
-  }
-
-  get(name) {
-    return this.globals[name];
-  }
-
   loadConfigs() {
     this.configs = loadConfigs(this.rootPath, this.env);
 
@@ -94,9 +86,10 @@ export default class Application {
 
   boot() {
     this.debug('app boot');
-    
+
     this.prepare();
-    this.middlewares = loadMiddlewares(this);
+
+    loadMiddlewares(this);
     loadAppClasses(this);
   }
 
@@ -119,6 +112,18 @@ export default class Application {
       cb();
     }
   }
+
+  set(name, object) {
+    this.globals[name] = object;
+  }
+
+  get(name) {
+    return this.globals[name];
+  }
+
+  middlewareIsLoad(name) {
+    return _.find(this.middlewares, {name: name});
+  }  
 
   abort(msg) {
     throw new Error(msg);
