@@ -85,7 +85,11 @@ export default class View {
     const self = this;
 
     return function(view, data = {}) {
-      data = _.merge(this.state, data);
+      _.forEach(data, (value, name) => {
+        this.state[name] = value;
+      });
+
+      data = this.state;
 
       let html = self.renderView(view, data);
 
