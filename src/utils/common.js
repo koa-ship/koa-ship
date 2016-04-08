@@ -1,3 +1,5 @@
+import lodash from 'lodash';
+
 export default {
 
   pickWithKeys: function(params, keys, defaultVal = null) {
@@ -12,6 +14,14 @@ export default {
     }
 
     return picked;
+  },
+
+  overwrite: function(rawData, overwriteData) {
+    lodash.forEach(overwriteData, (value, name) => {
+      rawData[name] = value;
+    });
+
+    return rawData;
   },
 
   sleep: function(ms) {
