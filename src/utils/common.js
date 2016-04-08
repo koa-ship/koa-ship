@@ -1,6 +1,9 @@
 import lodash from 'lodash';
 
 export default {
+  isEmptyObject: function(obj) {
+    return !Object.keys(obj).length;
+  },
 
   pickWithKeys: function(params, keys, defaultVal = null) {
     let picked = {};
