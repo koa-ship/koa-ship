@@ -234,6 +234,20 @@ export default class Asset {
   }
 
   /**
+   * Completion input paths
+   * @param  {Array} paths Raw paths
+   * @return {Array}       Completed paths
+   */
+  completionPaths(paths) {
+    let ret = [];
+    _.forEach(paths, (p) => {
+      ret.push(path.join(this.rawAssetsPath, p));
+    });
+
+    return ret;
+  }
+
+  /**
    * Compress raw files to the minifed file
    * @param  {String} file Dest file
    */
@@ -254,7 +268,7 @@ export default class Asset {
         return;
       }
 
-      let inputFiles = _.map(self.config.js[group], (js) => { return path.join(self.rawAssetsPath, js) });
+      let inputFiles = self.completionPaths(self.config.js[group]);
       let cmd = [ self.uglifyBin, inputFiles.join(' '), '-o ' + outputFile ].join(' ');
 
       return new Promise((resolve) => {
@@ -270,7 +284,7 @@ export default class Asset {
         return;
       }
 
-      let inputFiles = _.map(self.config.css[group], (css) => { return path.join(self.rawAssetsPath, css) });
+      let inputFiles = self.completionPaths(self.config.css[group]);
       let cmd = [ self.cleancssBin, outputFile, '-o ' + outputFile ].join(' ');
 
       buildify('/', {quiet: true}).concat(inputFiles).save(outputFile);
