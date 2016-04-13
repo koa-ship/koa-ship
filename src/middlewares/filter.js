@@ -60,20 +60,17 @@ export default class Filter {
     let raw = rawParams;
     let params = {};
 
-    _.forEach(rawParams, (value, param) => {
-      let rule = rules[param] || {};
-      rule.name = rule.name || param;
-      rule.type = (typeof rule.type != 'string' || rule.type == '') ? 'string' : rule.type;
-      rule.required = (rule.required === false) ? false : (rule.required || false);
-      rule.trim = (rule.trim === false) ? false : (rule.trim || true);
-      rule.default = (rule.default === undefined) ? self.defaultVal(rule.type) : rule.default;
-
+    _.forEach(rules, (rule, name) => {
       let err = null;
+      let value = rawParams[name];
+
+      rule.name = rule.name || name;
+
       [err, value] = self.check(value, rule);
       if (err) {
-        errors[param] = err;
+        errors[name] = err;
       } else {
-        params[param] = value;
+        params[name] = value;
       }
     });
     
