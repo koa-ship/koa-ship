@@ -102,6 +102,13 @@ export default class Controller {
   }
 
   /**
+   * 404 error
+   */
+  pageNotFound() {
+    this.ctx.throw(404);
+  }
+
+  /**
    * Redirect to url
    * @param  {String} url    Dest url
    * @param  {Number} status Http status
