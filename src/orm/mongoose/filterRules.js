@@ -71,19 +71,23 @@ export default function filterRules(schema, fields) {
         rule = { type: rule };
       }
 
+      let newRule = {};
       if (rule.type == 'string' || rule.type == String) {
-        rules[item] = format.string(rule);
+        newRule = format.string(rule);
       } else if (rule.type == 'number' || rule.type == Number) {
-        rules[item] = format.number(rule);
+        newRule = format.number(rule);
       } else if (rule.type == 'date' || rule.type == Date) {
-        rules[item] = format.date(rule);
+        newRule = format.date(rule);
       } else if (rule.type == 'boolean' || rule.type == Boolean) {
-        rules[item] = format.basic(rule, 'boolean');
+        newRule = format.basic(rule, 'boolean');
       } else if (rule.type.name == 'ObjectId') {
-        rules[item] = format.basic(rule, 'mongoid');
+        newRule = format.basic(rule, 'mongoid');
       } else if (Array.isArray(rule.type)) {
-        rules[item] = format.basic(rule, 'array');
+        newRule = format.basic(rule, 'array');
       }
+
+      newRule.name = rule.name;
+      rules[item] = newRule;
     }
     
     return rules;
