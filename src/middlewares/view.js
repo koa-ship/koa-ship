@@ -46,36 +46,10 @@ export default class View {
     if (this.app.middlewareIsLoad('session')) {
       this.useFlash();
     }
+
+    // handleError
+    this.handleError();
   }
-
-  /**
-   * Use flash
-   */
-  useFlash() {
-    let key = this.app.name + '-flash';
-
-    this.app.server.use(async function(ctx, next) {
-      let data = ctx.session[key] || {};
-
-      delete ctx.session[key];
-
-      Object.defineProperty(ctx, 'flash', {
-        enumerable: true,
-        get: function() {
-          return data;
-        },
-        set: function(val) {
-          ctx.session[key] = val;
-        }
-      });
-
-      await next();
-
-      if (ctx.status == 302 && ctx.session && !(ctx.session[key])) {
-        ctx.session[key] = data;
-      }
-    });
-  }  
 
   /**
    * Render html with view file and data
@@ -138,6 +112,115 @@ export default class View {
       delimiter: '%',
       compileDebug: false
     });
-  }   
+  }
+
+  /**
+   * Use flash
+   */
+  useFlash() {
+    let key = this.app.name + '-flash';
+
+    this.app.server.use(async function(ctx, next) {
+      let data = ctx.session[key] || {};
+
+      delete ctx.session[key];
+
+      Object.defineProperty(ctx, 'flash', {
+        enumerable: true,
+        get: function() {
+          return data;
+        },
+        set: function(val) {
+          ctx.session[key] = val;
+        }
+      });
+
+      await next();
+
+      if (ctx.status == 302 && ctx.session && !(ctx.session[key])) {
+        ctx.session[key] = data;
+      }
+    });
+  }  
+
+  handleError() {
+    const self = this;
+    const env = this.app.env;
+    const log = this.app.get('log');
+
+    this.app.server.use(async function(ctx, next) {
+      try {
+        await next();
+        if (ctx.response.status == 404 && !ctx.response.body) {
+          ctx.throw(404);
+        }
+      } catch (err) {
+        ctx.status = err.status || 500;
+
+        // handle error
+        // https://github.com/koajs/koa/wiki/Error-Handling
+        ctx.app.emit('error', err, ctx);
+
+        // https://github.com/trentm/node-bunyan
+        if (ctx.status == 500) {
+          log.error({req: ctx.req}, err);
+        }        
+
+        // accepted types
+        var type = ctx.accepts('json', 'html', 'text');
+
+        if (type === 'text') {
+          if (env === 'development' || err.expose) {
+            ctx.body = err.message;
+          } else {
+            ctx.body = http.STATUS_CODES[ctx.status];
+          }
+
+        } else if (type === 'json') {
+          if (env === 'development' || err.expose) {
+            ctx.body = {
+              error: err.message
+            };
+          } else {
+            ctx.body = {
+              error: http.STATUS_CODES[ctx.status]
+            }
+          }
+
+        } else {
+          let errors = self.config.error.errors || {
+            '404': 'errors/404',
+            '500': 'errors/500',
+            'common': 'errors/common'
+          };
+          let layout = self.config.error.layout || false;
+          let view = errors[ctx.status] || errors['common'];
+          let options = {
+            layout: layout,
+            env: env,
+            error: err,
+            status: ctx.status
+          };
+
+          try {
+            ctx.render(view, options);
+          } catch(e) {
+            let html = '';
+            
+            if (env === 'development' || err.expose) {
+              html = [
+                '<h2>' + e.code + '</h2>',
+                '<h3>' + e.message + '</h3>',
+                '<pre><code>' + e.stack + '</code></pre>'
+              ].join('');
+            }
+
+            ctx.body = html;
+          }
+        }
+
+      }
+    });
+  }
 
 }
