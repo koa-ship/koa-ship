@@ -10,7 +10,7 @@ export default class Filter {
 
       if (throwError) {
         if (Object.keys(errors).length > 0) {
-          throw new Error(JSON.stringify(errors));
+          throw new Error(self.plainErrors(errors));
         } else {
           return params;
         }
@@ -18,11 +18,19 @@ export default class Filter {
         if (Object.keys(errors).length == 0) {
           errors = null;
         }
-        return { raw: raw, params: params, errors: errors, error: JSON.stringify(errors) };
+        return { raw: raw, params: params, errors: errors, error: self.plainErrors(errors) };
       }
     });
 
     app.debug('middleware - filter loaded');
+  }
+
+  plainErrors(errors) {
+    if (errors) {
+      return JSON.stringify(errors);
+    } else {
+      return null;
+    }
   }
   
   defaultVal(type) {
