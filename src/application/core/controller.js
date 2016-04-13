@@ -165,4 +165,13 @@ export default class Controller {
     return this.filter(rawData, rules, throwError);
   }
 
+  /**
+   * Filter all params registed in rules
+   * @return {Object}          { raw: {}, params: {}, error: '', errors: {}}
+   */
+  filterAll() {
+    let rawData = this.params();    
+    let rules = this.rules || {};
+    return this.filter(rawData, rules);
+  }
 }
