@@ -6,6 +6,7 @@ import logger from 'koa-logger';
 import bunyan from 'bunyan';
 
 const DEFAULT_LOGGER_CONFIG = {
+  devLog: false,
   level: 'debug',
   baseDir: 'data/logs'
 };
@@ -32,7 +33,7 @@ export default class Logger {
    * Use middlewares
    */
   use() {
-    if (this.app.env == 'development') {
+    if (this.config.devLog) {
       this.app.server.use(logger());
     }
 
