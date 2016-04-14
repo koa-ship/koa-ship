@@ -13,8 +13,9 @@ const DEFAULT_SESSION_CONFIG = {
   key: 'appid',
   prefix: 'app:session:',
   cookie: { path: '/', maxage: null, rewrite: true, signed: true },
-  ttl: 3600,
+  ttl: 3600 * 1000,
   reconnectTimeout: 10000,
+  rolling: true
 };
 
 export default class Session {
