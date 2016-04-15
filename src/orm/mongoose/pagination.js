@@ -8,7 +8,7 @@ export default function pagination(schema) {
       context = context.ctx;
     }
 
-    options.current = context.query.page || 1;
+    options.current = _.parseInt(context.query.page) || 1;
     options.conditions = options.conditions || {};
     options.columns = options.columns || null;
     options.sortBy = options.sortBy || { _id: -1 };
