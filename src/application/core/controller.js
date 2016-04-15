@@ -173,6 +173,19 @@ export default class Controller {
   }
 
   /**
+   * Filter one param with rule
+   * @param  {String} name Param name
+   * @param  {Object} rule Filter rule
+   * @return {Object}      Filter result object
+   */
+  filterOne(name, rule) {
+    let rawData = this.params(name);    
+    let rules = {};
+    rules[name] = rule;
+    return this.filter(rawData, rules);
+  }
+
+  /**
    * Filter all params registed in rules
    * @return {Object}          { raw: {}, params: {}, error: '', errors: {}}
    */
