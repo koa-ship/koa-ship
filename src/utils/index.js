@@ -5,6 +5,7 @@ import utility from 'utility';
 import validator from 'validator';
 import moment from 'moment';
 import request from 'request';
+import sanitize from 'sanitize-html';
 import common from './common';
 import requireAll from './requireAll';
 
@@ -18,6 +19,7 @@ lodash.mixin(validator);
 lodash.mixin({
   moment: moment,
   request: request,
+  sanitize: sanitize,
   requireAll: requireAll
 });
 
