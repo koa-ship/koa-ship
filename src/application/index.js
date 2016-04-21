@@ -66,6 +66,10 @@ export default class Application {
     this.env = formatEnv(env);
   }
 
+  setTestEnv() {
+    this.setEnv('test');
+  }
+
   loadConfigs() {
     this.configs = loadConfigs(this.rootPath, this.env);
     this.name = this.configs.app.name;
