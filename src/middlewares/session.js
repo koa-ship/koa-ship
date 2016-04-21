@@ -27,7 +27,10 @@ export default class Session {
   constructor(app) {
     this.app = app;
     this.config = app.configs.session || {};
+
+    this.sessionOptions = _.merge({}, DEFAULT_SESSION_CONFIG, this.config);
     this.store = redisStore(_.merge({}, DEFAULT_REDIS_CONFIG, this.config.redis));
+    this.sessionOptions.store = this.store;
 
     this.use();
 
@@ -38,9 +41,9 @@ export default class Session {
    * Use middlewares
    */
   use() {
-    let sessionOptions = _.merge({}, DEFAULT_SESSION_CONFIG, this.config);
-    sessionOptions.store = this.store;
-    this.app.server.use(convert(session(sessionOptions)));    
+    this.app.server.use(convert(
+      session(this.sessionOptions)
+    ));    
   }
 
   close() {
