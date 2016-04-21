@@ -123,7 +123,7 @@ export default class Filter {
     const checkFn = this[fnName];
 
     if (typeof checkFn == 'function') {
-      return checkFn(value, rule);
+      return checkFn(_.toString(value), rule);
     } else {
       return this.checkString(value, rule);
     }
