@@ -1,6 +1,23 @@
 import lodash from 'lodash';
 
 export default {
+
+  cutHead: function(str, head) {
+    if (!str.startsWith(head)) {
+      return str;
+    }
+
+    return str.slice(head.length);
+  },
+
+  cutTail: function(str, tail) {
+    if (!str.endsWith(tail)) {
+      return str;
+    }
+
+    return str.slice(0, -tail.length);
+  },
+
   isEmptyObject: function(obj) {
     return !Object.keys(obj).length;
   },
