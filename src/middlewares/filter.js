@@ -325,4 +325,14 @@ export default class Filter {
 
     return [null, value];
   }
+
+  checkUrl(value, rule) {
+    const name = rule.name;
+
+    if (!_.isURL(value)) {
+      return [`${name} 不是一个有效的URL`, value];
+    }
+
+    return [null, value];
+  }
 }
