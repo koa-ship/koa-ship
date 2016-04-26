@@ -329,10 +329,17 @@ export default class Filter {
   checkUrl(value, rule) {
     const name = rule.name;
 
-    if (!_.isURL(value)) {
-      return [`${name} 不是一个有效的URL`, value];
+    if (_.isURL(value)) {
+      return [null, value];
     }
 
-    return [null, value];
+    value = decodeURIComponent(value);
+
+    if (_.isURL(value)) {
+      return [null, value];
+    } else {
+      return [`${name} 不是一个有效的URL`, value];
+    }
   }
+
 }
