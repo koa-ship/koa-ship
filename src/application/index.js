@@ -3,6 +3,7 @@
 import path from 'path';
 import fs from 'fs-extra';
 import debug from 'debug';
+import repl from 'repl';
 
 import Koa from 'koa';
 import Router from './core/router';
@@ -96,6 +97,11 @@ export default class Application {
 
     loadMiddlewares(this);
     loadAppClasses(this);
+  }
+
+  repl() {
+    this.boot();
+    repl.start('> ');
   }
 
   start() {
