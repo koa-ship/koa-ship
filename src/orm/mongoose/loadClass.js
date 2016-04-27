@@ -24,11 +24,9 @@ function wrap(schema, klass) {
     let method = Object.getOwnPropertyDescriptor(proto, name);
 
     if (preHooks.indexOf(name) != -1) {
-      let index = preHooks.indexOf(name);
-      schema.pre(hooks[index], method.value);
+      schema.pre(hooks[preHooks.indexOf(name)], method.value);
     } else if (postHooks.indexOf(name) != -1) {
-      let index = postHooks.indexOf(name);
-      schema.post(hooks[index], method.value);
+      schema.post(hooks[postHooks.indexOf(name)], method.value);
     } else {
       if (typeof method.value == 'function') schema.method(name, method.value);
       if (typeof method.get == 'function') schema.virtual(name).get(method.get);
