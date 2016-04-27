@@ -17,6 +17,27 @@ export default {
     });
   },
 
+  toTagsArray: function(tagStr) {
+    if (Array.isArray(tagStr)) {
+      return tagStr;
+    }
+
+    tagStr = lodash.toString(tagStr);
+    tagStr.split(/[,\\\uff0c]/);
+
+    let tags = [];
+    lodash.forEach(tagStr, function(tag) {
+      tag = tag.trim();
+      if (tag == '' || (tags.indexOf(tag) != -1)) {
+        return;
+      }
+
+      tags.push(tag);
+    });
+
+    return tags;
+  },
+
   cutHead: function(str, head) {
     if (!str.startsWith(head)) {
       return str;
