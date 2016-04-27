@@ -2,6 +2,21 @@ import lodash from 'lodash';
 
 export default {
 
+  safeMixin: function(obj) {
+    let _ = lodash;
+    _.each(_.functions(obj), function(name) {
+      if (_.prototype[name]) {
+        return;
+      }
+      var func = _[name] = obj[name];
+      _.prototype[name] = function() {
+        var args = [this._wrapped];
+        push.apply(args, arguments);
+        return chainResult(this, func.apply(_, args));
+      };
+    });
+  },
+
   cutHead: function(str, head) {
     if (!str.startsWith(head)) {
       return str;

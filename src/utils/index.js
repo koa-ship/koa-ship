@@ -13,10 +13,10 @@ import requireAll from './requireAll';
 lodash.mixin(common);
 
 // third parts utils
-lodash.mixin(utility);
-lodash.mixin(validator);
+lodash.safeMixin(utility);
+lodash.safeMixin(validator);
 
-lodash.mixin({
+lodash.safeMixin({
   moment: moment,
   request: request,
   sanitize: sanitize,
