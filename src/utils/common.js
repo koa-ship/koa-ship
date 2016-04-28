@@ -23,10 +23,9 @@ export default {
     }
 
     tagStr = lodash.toString(tagStr);
-    tagStr.split(/[,\\\uff0c]/);
 
     let tags = [];
-    lodash.forEach(tagStr, function(tag) {
+    lodash.forEach(tagStr.split(/[,\\\uff0c]/), function(tag) {
       tag = tag.trim();
       if (tag == '' || (tags.indexOf(tag) != -1)) {
         return;
