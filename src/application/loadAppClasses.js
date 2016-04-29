@@ -71,16 +71,27 @@ function loadHelpers(app) {
   });
 }
 
+function loadUtils(app) {
+  const appPath = path.join(app.rootPath, 'app');
+
+  global['utils'] = _.requireAll({
+    dirname : path.join(appPath, 'utils'),
+    filter : /(.+)\.js$/
+  });;
+}
+
 export default function loadAppClasses(app) {
   const appPath = path.join(app.rootPath, 'app');
 
   fs.ensureDirSync(path.join(appPath, 'controllers'));
   fs.ensureDirSync(path.join(appPath, 'services'));
   fs.ensureDirSync(path.join(appPath, 'helpers'));
+  fs.ensureDirSync(path.join(appPath, 'utils'));
 
   loadControllers(app);
   loadServices(app);
   loadHelpers(app);
+  loadUtils(app);
 
   app.debug('load application classes');
 };
