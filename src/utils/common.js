@@ -37,6 +37,10 @@ export default {
     return tags;
   },
 
+  trimAll: function(str) {
+    return str.replace(/ /g, '');
+  },
+
   cutHead: function(str, head) {
     if (!str.startsWith(head)) {
       return str;
