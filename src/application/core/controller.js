@@ -181,7 +181,7 @@ export default class Controller {
   filterOne(name, rule) {
     let rawData = this.params(name);    
     let rules = {};
-    rules[name] = rule;
+    rules[name] = rule || { type: 'string', required: true };
     return this.filter(rawData, rules);
   }
 
