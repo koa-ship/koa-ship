@@ -37,6 +37,12 @@ export default {
     return tags;
   },
 
+  assertString: function(input) {
+    if (typeof input !== 'string') {
+      throw new TypeError('The input is not a string type.');
+    }
+  },
+
   trimAll: function(str) {
     return str.replace(/ /g, '');
   },
