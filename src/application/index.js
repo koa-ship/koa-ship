@@ -100,8 +100,13 @@ export default class Application {
   }
 
   repl() {
+    console.log('Starting console, press ^D to exit.');
     this.boot();
-    repl.start('> ');
+
+    let replServer = repl.start('> ');
+    replServer.on('exit', () => {
+      process.exit();
+    });    
   }
 
   start() {
