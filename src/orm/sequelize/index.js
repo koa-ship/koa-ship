@@ -51,7 +51,8 @@ class Client {
     global['Sequelize'] = Sequelize;
 
     let classes = _.requireAll({
-      dirname : this.config.models,
+      dirname : this.config.modelPath,
+      recursive: false,
       filter : /(.+)\.js$/
     });
 
