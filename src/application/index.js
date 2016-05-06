@@ -51,7 +51,7 @@ export default class Application {
 
     // read env from env.js file
     const envfile = path.join(this.rootPath, 'env.js');
-    if (!fs.existsSync(envfile)) {
+    if (!this.fileExists(envfile)) {
       return env;
     }
 
@@ -61,6 +61,15 @@ export default class Application {
     env = process.env.NODE_ENV || env;
 
     return formatEnv(env);
+  }
+
+  fileExists(file) {
+    try {
+      fs.stat(file);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   setEnv(env) {

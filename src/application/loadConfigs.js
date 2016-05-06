@@ -21,7 +21,7 @@ export default function loadConfigs(rootPath, envString) {
   fs.ensureDirSync(envDir);
 
   // Load configs of envirment
-  if (fs.existsSync(envFile)) {
+  if (_.fileExists(envFile)) {
     env = require(envFile);
   }
 

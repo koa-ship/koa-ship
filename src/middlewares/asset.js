@@ -256,7 +256,7 @@ export default class Asset {
     const assets = this.assets || { js: {}, css: {} };
 
     const outputFile = path.join(this.minifiedAssetsPath, file);
-    if (fs.existsSync(outputFile)) {
+    if (_.fileExists(outputFile)) {
       return;
     }
 

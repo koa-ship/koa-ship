@@ -1,6 +1,16 @@
 import lodash from 'lodash';
+import fs from 'fs';
 
 export default {
+
+  fileExists: function(file) {
+    try {
+      fs.stat(file);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  },
 
   safeMixin: function(obj) {
     let _ = lodash;

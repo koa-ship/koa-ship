@@ -102,7 +102,7 @@ export default class View {
    */
   renderView(view, data) {
     const viewFile = path.join(this.app.rootPath, 'app', 'views', `${view}.ejs`);
-    if (!fs.existsSync(viewFile)) {
+    if (!_.fileExists(viewFile)) {
       return `File not found: app/views/${view}.ejs`;
     }
 
