@@ -65,7 +65,7 @@ export default class Application {
 
   fileExists(file) {
     try {
-      fs.stat(file);
+      fs.statSync(file);
       return true;
     } catch (e) {
       return false;
