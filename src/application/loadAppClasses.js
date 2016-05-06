@@ -10,7 +10,7 @@ function loadControllers(app) {
 
   global['Controller'] = Controller;
   const base = path.join(appPath, 'controllers', 'BaseController.js');
-  if (fs.existsSync(base)) {
+  if (_.fileExists(base)) {
     global['BaseController'] = require(base);
   }
 
@@ -74,10 +74,14 @@ function loadHelpers(app) {
 function loadUtils(app) {
   const appPath = path.join(app.rootPath, 'app');
 
-  global['utils'] = _.requireAll({
+  const _utils = _.requireAll({
     dirname : path.join(appPath, 'utils'),
     filter : /(.+)\.js$/
-  });;
+  });
+
+  _.forEach(_utils, (util, name) => {
+    _[name] = util;
+  });
 }
 
 export default function loadAppClasses(app) {
