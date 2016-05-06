@@ -1,14 +1,15 @@
 'use strict';
 
+import inspector from 'class-inspector';
+
 function wrap(schema, klass) {
-  let proto = klass.prototype;
-  let staticProps = Object.getOwnPropertyNames(klass);
-  let prototypeProps = Object.getOwnPropertyNames(proto);
-  let instanceProps = prototypeProps.filter(name => name !== 'constructor');
+  let methods = inspector(klass);
+
+  let staticMethods = methods.staticMethods;
+  let instanceMethods = methods.instanceMethods;
 
   // static methods
-  staticProps.forEach(name => {
-    let method = Object.getOwnPropertyDescriptor(klass, name);
+  _.forEach(staticMethods, (method, name) => {
     if (typeof method.value == 'function') schema.static(name, method.value);
   });
 
@@ -20,8 +21,10 @@ function wrap(schema, klass) {
   let preHooks = hooks.map((item) => { return 'pre' + item.capitalize(); });
   let postHooks = hooks.map((item) => { return 'post' + item.capitalize(); });  
 
-  instanceProps.forEach(name => {
-    let method = Object.getOwnPropertyDescriptor(proto, name);
+  _.forEach(instanceMethods, (method, name) => {
+    if (name == 'constructor') {
+      return;
+    }
 
     if (preHooks.indexOf(name) != -1) {
       schema.pre(hooks[preHooks.indexOf(name)], method.value);

@@ -1,10 +1,10 @@
 'use strict';    
 
 export default function loadClass(sequelize, name, klass) {
-  let proto = klass.prototype;
-  let staticProps = Object.getOwnPropertyNames(klass);
-  let prototypeProps = Object.getOwnPropertyNames(proto);
-  let instanceProps = prototypeProps.filter(name => name !== 'constructor');
+  let methods = inspector(klass);
+
+  let staticMethods = methods.staticMethods;
+  let instanceMethods = methods.instanceMethods;
 
   let options = {
     classMethods: {},
@@ -15,8 +15,7 @@ export default function loadClass(sequelize, name, klass) {
   };
 
   // static methods
-  staticProps.forEach(name => {
-    let method = Object.getOwnPropertyDescriptor(klass, name);
+  _.forEach(staticMethods, (method, name) => {
     if (typeof method.value == 'function') options.classMethods[name] = method.value;
   });
 
@@ -27,8 +26,10 @@ export default function loadClass(sequelize, name, klass) {
   let preHooks = hooks.map((item) => { return 'before' + item.capitalize(); });
   let postHooks = hooks.map((item) => { return 'after' + item.capitalize(); });  
 
-  instanceProps.forEach(name => {
-    let method = Object.getOwnPropertyDescriptor(proto, name);
+  _.forEach(instanceMethods, (method, name) => {
+    if (name == 'constructor') {
+      return;
+    }
 
     if (preHooks.indexOf(name) != -1) {
       let index = preHooks.indexOf(name);

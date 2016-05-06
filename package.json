@@ -45,6 +45,7 @@
     "request": "^2.70.0",
     "sanitize-html": "^1.11.4",
     "validator": "^5.1.0",
+    "class-inspector": "^0.0.2",
     "debug": "*",
     "node-next": "*"
   },
