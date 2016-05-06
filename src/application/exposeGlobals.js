@@ -1,7 +1,7 @@
 'use strict';
 
 import path from 'path';
-import util from './../utils';
+import utils from './../utils';
 
 /**
  * Load liberary from rootpath/path/to/lib
@@ -19,7 +19,7 @@ var loadLib = function(app) {
  * @param  {Object} app koa-ship Application handler
  */
 export default function exposeGlobals(app) {
-  global['_'] = util;
+  global['_'] = utils;
   global['requireLib'] = loadLib(app);
 
   // set consts which can be invoked in action.
