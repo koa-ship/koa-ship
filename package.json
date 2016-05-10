@@ -30,8 +30,6 @@
     "koa-passport": "^2.1.0",
     "koa-send": "^3.2.0",
     "csrf": "^3.0.0",
-    "mongoose": "^4.4.10",
-    "sequelize": "^3.20.0",
     "fs-extra": "^0.26.7",
     "ejs": "^2.4.1",
     "uglify-js": "^2.6.2",
@@ -45,7 +43,7 @@
     "request": "^2.70.0",
     "sanitize-html": "^1.11.4",
     "validator": "^5.1.0",
-    "class-inspector": "^0.0.2",
+    "ks-store": "*",
     "debug": "*",
     "node-next": "*"
   },
