@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/seandou/koa-ship.git"
+    "url": "https://github.com/koa-ship/koa-ship.git"
   },
   "keywords": [
     "framework",
@@ -60,7 +60,7 @@
   "author": "Sean Dou",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/seandou/koa-ship/issues"
+    "url": "https://github.com/koa-ship/koa-ship/issues"
   },
-  "homepage": "https://github.com/seandou/koa-ship#readme"
+  "homepage": "https://github.com/koa-ship/koa-ship#readme"
 }
