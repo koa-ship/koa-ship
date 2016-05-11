@@ -40,16 +40,6 @@ export default class Csrf {
     /**
      * Asserts that a CSRF token exists and is valid.
      * Throws a 403 error otherwise.
-     * var body = yield* this.request.json()
-     * try {
-     *   this.assertCSRF(body)
-     * } catch (err) {
-     *   this.status = 403
-     *   this.body = {
-     *     message: 'invalid CSRF token'
-     *   }
-     * }
-     *
      * @param {Object} body
      * @return {Context} this
      * @api public
@@ -75,20 +65,8 @@ export default class Csrf {
     request.assertCSRF =
     request.assertCsrf = function (body) {
       this.ctx.assertCsrf(body)
-      return this
+      return this;
     };
 
-    this.app.server.use(async function(ctx, next) {
-      if (ctx.method === 'GET'
-        || ctx.method === 'HEAD'
-        || ctx.method === 'OPTIONS'
-        || ctx.skipCSRF) {
-        return await next();
-      }
-
-      ctx.assertCSRF(ctx.request.body)
-
-      await next();
-    });    
   }
 }
