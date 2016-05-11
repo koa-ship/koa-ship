@@ -17,11 +17,37 @@ export default class Controller {
   }
 
   before() {
+    // check csrf token before each action
+    this.csrfCheck();
+
+    // Pass csrf to view layer
     this.set('_csrf', this.ctx.csrf);
     this.set('csrf_tag', '<input type="hidden" name="_csrf" value="' + this.ctx.csrf + '">');    
   }
 
   after() {
+  }
+
+  /**
+   * Set skipCSRF flag.
+   */
+  skipCSRF() {
+    this.ctx.skipCSRF = true;
+  }
+
+  /**
+   * Check csrf token
+   */
+  csrfCheck() {
+    if (['GET', 'HEAD', 'OPTIONS'].indexOf(this.ctx.method) != -1) {
+      return;
+    }
+    
+    if (this.ctx.skipCSRF) {
+      return;
+    }
+
+    this.ctx.assertCSRF(this.ctx.request.body);
   }
 
   /**
