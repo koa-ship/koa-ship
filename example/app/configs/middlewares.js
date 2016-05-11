@@ -5,7 +5,7 @@ module.exports = {
     'base',
     'redis',
     'session',
-    'orm',
+    'store',
     'view',
     'static',
     'filter',
