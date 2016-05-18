@@ -1,6 +1,6 @@
 {
   "name": "koa-ship",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Web framework made by koa.",
   "main": "lib/index.js",
   "scripts": {
