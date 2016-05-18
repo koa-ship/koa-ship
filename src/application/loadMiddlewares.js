@@ -10,7 +10,7 @@ import Filter from './../middlewares/filter';
 import Csrf from './../middlewares/csrf';
 import Asset from './../middlewares/asset';
 import Passport from './../middlewares/passport';
-import { KoaShipStore } from 'ks-store';
+import { KoaShipDB } from 'ks-database';
 
 /**
  * Middleware map
@@ -21,7 +21,7 @@ const DEFAULT_MW_ORDER = {
   base: Base,
   redis: Redis,
   session: Session,
-  store: KoaShipStore,  
+  database: KoaShipDB,  
   view: View,
   static: Static,
   filter: Filter,
