@@ -120,7 +120,6 @@ export default class Asset {
       await next();
 
       if (ctx.method != 'HEAD' && ctx.method != 'GET') return;
-      if (!ctx.path.match(/.*\.js$/) && !ctx.path.match(/.*\.css$/)) return;
 
       // Response is already handled
       if (ctx.body != null || ctx.status != 404) return;
