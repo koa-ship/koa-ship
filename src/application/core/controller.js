@@ -47,6 +47,10 @@ export default class Controller {
       return;
     }
 
+    if (!this.ctx.assertCSRF) {
+      return;
+    }
+
     this.ctx.assertCSRF(this.ctx.request.body);
   }
 
