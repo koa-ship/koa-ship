@@ -3,13 +3,13 @@
 import Logger from './../middlewares/logger';
 import Base from './../middlewares/base';
 import Redis from './../middlewares/redis';
-import Session from './../middlewares/session';
 import View from './../middlewares/view';
 import Static from './../middlewares/static';
 import Filter from './../middlewares/filter';
 import Csrf from './../middlewares/csrf';
 import Asset from './../middlewares/asset';
 import Passport from './../middlewares/passport';
+import { KoaShipSession } from 'ks-session';
 import { KoaShipDB } from 'ks-database';
 
 /**
@@ -20,7 +20,7 @@ const DEFAULT_MW_ORDER = {
   logger: Logger,
   base: Base,
   redis: Redis,
-  session: Session,
+  session: KoaShipSession,
   database: KoaShipDB,  
   view: View,
   static: Static,
