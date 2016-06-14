@@ -104,8 +104,8 @@ export default class Application {
 
     this.prepare();
 
-    loadMiddlewares(this);
     loadAppClasses(this);
+    loadMiddlewares(this);
   }
 
   repl() {
