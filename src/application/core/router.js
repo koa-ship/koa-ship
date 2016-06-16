@@ -43,7 +43,8 @@ export default class Router {
     _.forEach(routes, (ca, rule) => {
       const ret = self.parseRule(rule);
       const parts = ca.split('#');
-      let controller = self.parseController(parts[0]);
+      const controller = parts[0];
+      let controllerKlass = self.parseController(controller);
       let action = parts[1];
 
       for(let method of ret['methods']) {
@@ -52,10 +53,14 @@ export default class Router {
         }
 
         self.engine[method](ret['path'], async function(ctx, next) {
-          const instance = new controller(self.app, ctx);
+          const instance = new controllerKlass(self.app, ctx);
           await instance['before']();
           if (ctx.status == 404) {
-            await instance[action](next);
+            if (typeof instance[action] != 'function') {
+              ctx.throw(`action not found: ${controller}#${action}`);
+            } else {
+              await instance[action](next);
+            }
           }
           await instance['after']();
         });
