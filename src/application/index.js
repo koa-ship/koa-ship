@@ -31,6 +31,13 @@ export default class Application {
 
   setDirs(rootPath, frameworkPath) {
     this.rootPath = rootPath;
+    this.appPath = path.join(this.rootPath, 'app');
+    this.tmpPath = path.join(this.rootPath, 'tmp');
+    this.dataPath = path.join(this.rootPath, 'data');
+
+    fs.ensureDirSync(this.appPath);
+    fs.ensureDirSync(this.tmpPath);
+    fs.ensureDirSync(this.dataPath);    
 
     if (frameworkPath == null) {
       frameworkPath = path.dirname(path.dirname(__dirname));
@@ -38,12 +45,6 @@ export default class Application {
 
     this.frameworkPath = frameworkPath;
     this.npmBinPath = path.join(this.rootPath, 'node_modules', '.bin');
-
-    this.tmpPath = path.join(this.rootPath, 'tmp');
-    fs.ensureDirSync(this.tmpPath);
-
-    this.dataPath = path.join(this.rootPath, 'data');
-    fs.ensureDirSync(this.dataPath);
   }
 
   loadEnv() {
@@ -110,8 +111,7 @@ export default class Application {
 
   repl() {
     console.log('Starting console, press ^D to exit.');
-    
-    this.boot();
+
     global['utils'] = _;
 
     let replServer = repl.start('> ');
@@ -133,8 +133,8 @@ export default class Application {
 
   run(cb) {
     this.boot();
-    this.start();
 
+    this.start();
     if (typeof cb == 'function') {
       cb();
     }

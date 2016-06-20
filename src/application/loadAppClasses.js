@@ -6,16 +6,14 @@ import fs from 'fs-extra';
 import Controller from './core/controller';
 
 function loadControllers(app) {
-  const appPath = path.join(app.rootPath, 'app');
-
   global['Controller'] = Controller;
-  const base = path.join(appPath, 'controllers', 'BaseController.js');
+  const base = path.join(app.appPath, 'controllers', 'BaseController.js');
   if (_.fileExists(base)) {
     global['BaseController'] = require(base);
   }
 
   const otherbases = _.requireAll({
-    dirname : path.join(appPath, 'controllers'),
+    dirname : path.join(app.appPath, 'controllers'),
     filter : /(.+BaseController)\.js$/
   });  
 
@@ -25,7 +23,7 @@ function loadControllers(app) {
   });
 
   const controllers = _.requireAll({
-    dirname : path.join(appPath, 'controllers'),
+    dirname : path.join(app.appPath, 'controllers'),
     filter : /(.+Controller)\.js$/
   });
 
@@ -37,10 +35,8 @@ function loadControllers(app) {
 }
 
 function loadServices(app) {
-  const appPath = path.join(app.rootPath, 'app');
-
   const services = _.requireAll({
-    dirname : path.join(appPath, 'services'),
+    dirname : path.join(app.appPath, 'services'),
     filter : /(.+Service)\.js$/
   });
 
@@ -53,10 +49,8 @@ function loadServices(app) {
 }
 
 function loadHelpers(app) {
-  const appPath = path.join(app.rootPath, 'app');
-
   const helpers = _.requireAll({
-    dirname : path.join(appPath, 'helpers'),
+    dirname : path.join(app.appPath, 'helpers'),
     filter : /(.+Helper)\.js$/
   });
 
@@ -72,10 +66,8 @@ function loadHelpers(app) {
 }
 
 function loadUtils(app) {
-  const appPath = path.join(app.rootPath, 'app');
-
   const _utils = _.requireAll({
-    dirname : path.join(appPath, 'utils'),
+    dirname : path.join(app.appPath, 'utils'),
     filter : /(.+)\.js$/
   });
 
@@ -85,12 +77,10 @@ function loadUtils(app) {
 }
 
 export default function loadAppClasses(app) {
-  const appPath = path.join(app.rootPath, 'app');
-
-  fs.ensureDirSync(path.join(appPath, 'controllers'));
-  fs.ensureDirSync(path.join(appPath, 'services'));
-  fs.ensureDirSync(path.join(appPath, 'helpers'));
-  fs.ensureDirSync(path.join(appPath, 'utils'));
+  fs.ensureDirSync(path.join(app.appPath, 'controllers'));
+  fs.ensureDirSync(path.join(app.appPath, 'services'));
+  fs.ensureDirSync(path.join(app.appPath, 'helpers'));
+  fs.ensureDirSync(path.join(app.appPath, 'utils'));
 
   loadControllers(app);
   loadServices(app);
