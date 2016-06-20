@@ -3,7 +3,7 @@
 import path from 'path';
 import fs from 'fs-extra';
 import debug from 'debug';
-import repl from 'repl';
+import repl from 'ks-repl';
 
 import Koa from 'koa';
 import Router from './core/router';
@@ -48,29 +48,20 @@ export default class Application {
   }
 
   loadEnv() {
-    let env = 'production';
+    let env;
 
     // read env from env.js file
     const envfile = path.join(this.rootPath, 'env.js');
-    if (!this.fileExists(envfile)) {
-      return env;
+    try {
+      env = require(envfile);
+    } catch(e) {
+      env = 'production';
     }
-
-    env = require(envfile);
 
     // NODE_ENV will overwrite env
     env = process.env.NODE_ENV || env;
 
     return formatEnv(env);
-  }
-
-  fileExists(file) {
-    try {
-      fs.statSync(file);
-      return true;
-    } catch (e) {
-      return false;
-    }
   }
 
   setEnv(env) {
@@ -109,18 +100,7 @@ export default class Application {
     loadMiddlewares(this);
   }
 
-  repl() {
-    console.log('Starting console, press ^D to exit.');
-
-    global['utils'] = _;
-
-    let replServer = repl.start('> ');
-    replServer.on('exit', () => {
-      process.exit();
-    });    
-  }
-
-  start() {
+  startServer() {
     this.debug('app start');
 
     let router = new Router(this);
@@ -131,12 +111,23 @@ export default class Application {
     this.server.listen(port);
   }
 
+  startRepl() {
+    global['utils'] = _;
+
+    repl({
+      scripts: path.join(this.appPath, 'scripts'),
+      history: path.join(this.dataPath, 'repl.log')
+    });
+  }
+
   run(cb) {
     this.boot();
 
-    this.start();
-    if (typeof cb == 'function') {
-      cb();
+    if (process.argv.indexOf('--repl') != -1) {
+      this.startRepl();
+    } else {
+      this.startServer();
+      if (typeof cb == 'function') cb();
     }
   }
 

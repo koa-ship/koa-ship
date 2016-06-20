@@ -42,6 +42,7 @@
     "ks-lodash": "*",
     "ks-database": "*",
     "ks-session": "*",
+    "ks-repl": "*",
     "debug": "*",
     "node-next": "*"
   },
