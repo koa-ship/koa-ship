@@ -5,6 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf lib/*",
+    "update": "rm -rf node_modules/ks-* && rm -rf node_modules/node-next && npm install",
     "compile": "babel src --quiet --out-dir lib",
     "prepublish": "npm run compile",
     "release:major": "npm version major && npm publish && git push --follow-tags",
