@@ -115,7 +115,7 @@ export default class Application {
     global['utils'] = _;
 
     repl({
-      scripts: path.join(this.appPath, 'scripts'),
+      cli: path.join(this.appPath, 'cli'),
       history: path.join(this.dataPath, 'repl.log')
     });
   }
