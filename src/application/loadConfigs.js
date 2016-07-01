@@ -29,6 +29,11 @@ export default function loadConfigs(rootPath, envString) {
   // Expose env to global, which can be invoke in config files.
   global['env'] = env;
 
+  // Expose Config to global
+  global['Config'] = {
+    assets: require('./config/assets'),
+  };
+
   // Load app configs
   const files = glob.sync(path.join(configsDir, '*.js'));
 
