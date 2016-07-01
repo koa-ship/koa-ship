@@ -32,6 +32,7 @@ export default function loadConfigs(rootPath, envString) {
   // Expose Config to global
   global['Config'] = {
     assets: require('./config/assets'),
+    routes: require('./config/routes'),
   };
 
   // Load app configs
