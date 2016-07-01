@@ -34,12 +34,7 @@ export default class Asset {
 
     this.uglifyBin = path.join(this.app.npmBinPath, 'uglifyjs');
     this.cleancssBin = path.join(this.app.npmBinPath, 'cleancss');
-
-    if (this.config.minify !== false) {
-      this.minify = true;
-    } else {
-      this.minify = false;
-    }
+    this.minify = (this.config.minify !== false);
 
     if (!this.baseUrl.endsWith('/')) {
       this.baseUrl = this.baseUrl + '/';
