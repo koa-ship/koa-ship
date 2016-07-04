@@ -1,6 +1,7 @@
 'use strict';
 
 import KoaRouter from 'koa-router';
+import async from 'async';
 
 /**
  * HTTP methods
@@ -31,7 +32,7 @@ export default class Router {
     this.configs = app.configs;
   }
 
-  loadRules() {
+  loadRules(cb) {
     let self = this;
 
     if (!this.configs.routes) {
@@ -39,6 +40,7 @@ export default class Router {
     }
 
     let routes = this.formatRoutes(this.configs.routes);
+    let tasks = [];
 
     _.forEach(routes, (ca, rule) => {
       const ret = self.parseRule(rule);
@@ -48,28 +50,36 @@ export default class Router {
       let action = parts[1];
 
       for(let method of ret['methods']) {
-        if (METHODS.indexOf(method) == -1) {
-          self.abort(`method is invalid: ${rule} => ${ca}`);
-        }
-
-        self.engine[method](ret['path'], async function(ctx, next) {
-          const instance = new controllerKlass(self.app, ctx);
-          await instance['before']();
-          if (ctx.status == 404) {
-            if (typeof instance[action] != 'function') {
-              ctx.throw(`action not found: ${controller}#${action}`);
-            } else {
-              await instance[action](next);
-            }
+        tasks.push(function(nextRule) {
+          if (METHODS.indexOf(method) == -1) {
+            return nextRule(`method is invalid: ${rule} => ${ca}`);
           }
-          await instance['after']();
+
+          self.engine[method](ret['path'], async function(ctx, next) {
+            const instance = new controllerKlass(self.app, ctx);
+            await instance['before']();
+            if (ctx.status == 404) {
+              if (typeof instance[action] != 'function') {
+                ctx.throw(`action not found: ${controller}#${action}`);
+              } else {
+                await instance[action](next);
+              }
+            }
+            await instance['after']();
+          });
+
+          nextRule();
         });
       }
     });
 
-    self.server
-      .use(self.engine.routes())
-      .use(self.engine.allowedMethods());
+    async.parallel(tasks, function(err) {
+      if (err) return cb(err);
+      self.server
+        .use(self.engine.routes())
+        .use(self.engine.allowedMethods());
+      cb();
+    });
   }
 
   /**

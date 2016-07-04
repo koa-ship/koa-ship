@@ -100,15 +100,21 @@ export default class Application {
     loadMiddlewares(this);
   }
 
-  startServer() {
+  startServer(cb) {
+    const self = this;
     this.debug('app start');
 
     let router = new Router(this);
-    router.loadRules();
+    router.loadRules(function(err) {
+      if (err) {
+        return self.abort(err);
+      }
 
-    let port = this.configs.app.port;
-    this.debug(`listening on port ${port}`);
-    this.server.listen(port);
+      let port = self.configs.app.port;
+      self.debug(`listening on port ${port}`);
+      self.server.listen(port);
+      cb();
+    });
   }
 
   startRepl() {
@@ -126,8 +132,9 @@ export default class Application {
     if (process.argv.indexOf('--repl') != -1) {
       this.startRepl();
     } else {
-      this.startServer();
-      if (typeof cb == 'function') cb();
+      this.startServer(function() {
+        if (typeof cb == 'function') cb();
+      });
     }
   }
 
