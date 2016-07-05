@@ -14,7 +14,7 @@ class RoutesConfig {
   }
 
   setBaseRoutes(base) {
-    this.routes = _.merge(this.routes, base);
+    this.routes = _.merge(this.routes, base || {});
   }
 
   load() {
@@ -34,11 +34,13 @@ class RoutesConfig {
 
   mount(subRoutes, options) {
     this.routes.namespaces[options.to] = options.dir;
-    this.routes[options.to] = subRoutes;
+    this.routes[options.to] = subRoutes || {};
+    return this;
   }
 
   merge(subRoutes) {
-    this.routes = _.merge(this.routes, subRoutes);
+    this.routes = _.merge(this.routes, subRoutes || {});
+    return this;
   }
 
   export() {
