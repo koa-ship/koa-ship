@@ -29,5 +29,7 @@ export default function exposeGlobals(app) {
   app.set('frameworkPath', app.frameworkPath);
   app.set('npmBinPath', app.npmBinPath);
 
+  app.set('env', app.env);
+
   app.debug('expose globals');
 };
