@@ -37,7 +37,7 @@ export default class Application {
 
     fs.ensureDirSync(this.appPath);
     fs.ensureDirSync(this.tmpPath);
-    fs.ensureDirSync(this.dataPath);    
+    fs.ensureDirSync(this.dataPath);
 
     if (frameworkPath == null) {
       frameworkPath = path.dirname(path.dirname(__dirname));
@@ -79,7 +79,6 @@ export default class Application {
     this.server.name = this.configs.app.name;
     this.server.env = this.env;
 
-    // TODO: warnning keys should set
     if (this.configs.app.keys) {
       this.server.keys = this.configs.app.keys;
     }
@@ -148,7 +147,7 @@ export default class Application {
 
   middlewareIsLoad(name) {
     return _.find(this.middlewares, {name: name});
-  }  
+  }
 
   abort(msg) {
     throw new Error(msg);
